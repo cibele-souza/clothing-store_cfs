@@ -1,7 +1,12 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 
 import FormInput from '../form-input/form-input.component';
 import Button from '../button/button.component';
+
+import { UserContext } from '../../contexts/user.context';
+// the UserContext object will give us back whatever value is passed in for the value
+// (value = { currentUser, setCurrentUser})
+// -> our value is:  the current user from state (currentUser) + setter function (setCurrentUser)
 
 import {
    createUserDocumentFromAuth,
@@ -20,6 +25,9 @@ const SignInForm = () => {
    const [formFields, setFormFields] = useState(defaultFormFields);
    const { email, password } = formFields; // destructuring of the object formFields;
 
+   // we want to update our currentUser -> destructure the setter function setCurrentUser
+   const { setCurrentUser } = useContext(UserContext);
+
    const resetFormFields = () => setFormFields(defaultFormFields);
 
    const signInWithGoogle = async () => {
@@ -31,11 +39,11 @@ const SignInForm = () => {
       event.preventDefault();
 
       try {
-         const response = await signInAuthUserWithEmailAndPassword(
+         const { user } = await signInAuthUserWithEmailAndPassword(
             email,
             password,
          );
-         // console.log(response);
+         setCurrentUser(user); // we run the setCurrentUser function whenever the user value comes back
          resetFormFields();
       } catch (error) {
          if (error.code === 'auth/invalid-credential') {

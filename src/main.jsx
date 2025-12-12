@@ -1,14 +1,20 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router';
 
-import './index.css'
-import App from './App.jsx'
+import App from './App.jsx';
+import { UserProvider } from './contexts/user.context.jsx';
+
+import './index.css';
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </StrictMode>,
-)
+   <StrictMode>
+      <BrowserRouter>
+         <UserProvider>
+            <App />
+            // All the components inside the UserProvider tag will be able to
+            access its context
+         </UserProvider>
+      </BrowserRouter>
+   </StrictMode>,
+);
