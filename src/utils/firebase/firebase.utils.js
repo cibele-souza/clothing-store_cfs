@@ -5,9 +5,10 @@ import { initializeApp } from 'firebase/app';
 // https://firebase.google.com/docs/web/setup#available-libraries
 import {
    getAuth,
-   signInWithRedirect,
    signInWithPopup,
    GoogleAuthProvider,
+   createUserWithEmailAndPassword,
+   signInWithEmailAndPassword,
 } from 'firebase/auth';
 
 // Import the frunctions you need for your database
@@ -37,24 +38,25 @@ export const auth = getAuth();
 export const signInWithGooglePopup = () =>
    signInWithPopup(auth, googleProvider);
 
-// Setting up the sign in with Redirect
-export const signInWithGoogleRedirect = () =>
-   signInWithRedirect(auth, googleProvider);
-
 // Create the database instance
 export const db = getFirestore();
 
 // -> Function that will take the data we are getting from the authentication service and store it inside of Firestore
-export const createUserDocumentFromAuth = async (userAuth) => {
+// additionalInfo: if we sign-up with email/password, we are not going to have userName that comes from userAuth
+// we will use the object additionalInfo to pass the displayName ourselves -> it will overwrithe the null value that
+// might come if we authenticate using email/password
+export const createUserDocumentFromAuth = async (userAuth, additionalInfo) => {
+   if (!userAuth) return;
+
    // is there an existing document reference?
    // Reference: special type of object that Firestore uses when talking about actual instance of a document model
    const userDocRef = doc(db, 'users', userAuth.uid);
 
-   console.log(userDocRef);
+   // console.log(userDocRef);
 
    const userSnapshot = await getDoc(userDocRef);
-   console.log(userSnapshot);
-   console.log(userSnapshot.exists());
+   // console.log(userSnapshot);
+   // console.log(userSnapshot.exists());
 
    // does user date exists ?
    // false, user data doesn't exist -> create / set the document with the data from userAuth in my collection
@@ -67,6 +69,7 @@ export const createUserDocumentFromAuth = async (userAuth) => {
             displayName,
             email,
             createdAt,
+            ...additionalInfo,
          });
       } catch (error) {
          console.log('error creating the user', error.message);
@@ -75,4 +78,16 @@ export const createUserDocumentFromAuth = async (userAuth) => {
 
    // true, user data exists -> return userDocRef
    return userDocRef;
+};
+
+// Creating the user with email and password -> create an authenticated user inside of our Firebase Authentication tab
+export const createAuthUserWithEmailAndPassword = async (email, password) => {
+   if (!email || !password) return;
+   return await createUserWithEmailAndPassword(auth, email, password);
+};
+
+// Signing in with email and password
+export const signInAuthUserWithEmailAndPassword = async (email, password) => {
+   if (!email || !password) return;
+   return await signInWithEmailAndPassword(auth, email, password);
 };
