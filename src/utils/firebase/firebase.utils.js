@@ -10,6 +10,7 @@ import {
    createUserWithEmailAndPassword,
    signInWithEmailAndPassword,
    signOut,
+   onAuthStateChanged,
 } from 'firebase/auth';
 
 // Import the frunctions you need for your database
@@ -53,11 +54,7 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInfo) => {
    // Reference: special type of object that Firestore uses when talking about actual instance of a document model
    const userDocRef = doc(db, 'users', userAuth.uid);
 
-   // console.log(userDocRef);
-
    const userSnapshot = await getDoc(userDocRef);
-   // console.log(userSnapshot);
-   // console.log(userSnapshot.exists());
 
    // does user date exists ?
    // false, user data doesn't exist -> create / set the document with the data from userAuth in my collection
@@ -95,3 +92,7 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 
 // Signing out user
 export const signOutUser = async () => await signOut(auth);
+
+// Observer listener function
+export const onAuthStateChangedListener = (callback) =>
+   onAuthStateChanged(auth, callback);

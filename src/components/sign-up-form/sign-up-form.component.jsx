@@ -1,9 +1,7 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 
 import FormInput from '../form-input/form-input.component';
 import Button from '../button/button.component';
-
-import { UserContext } from '../../contexts/user.context';
 
 import {
    createAuthUserWithEmailAndPassword,
@@ -22,8 +20,6 @@ const defaultFormFields = {
 const SignUpForm = () => {
    const [formFields, setFormFields] = useState(defaultFormFields);
    const { displayName, email, password, confirmPassword } = formFields; // destructuring of the object formFields;
-
-   const { setCurrentUser } = useContext(UserContext);
 
    const resetFormFields = () => setFormFields(defaultFormFields);
 
@@ -48,12 +44,9 @@ const SignUpForm = () => {
             email,
             password,
          );
-
-         // store the user information into the context, by calling the setter function
-         setCurrentUser(user);
-
          // create a user document from what createAuthUserWithEmailAndPassword returns + pass the displayName
          await createUserDocumentFromAuth(user, { displayName });
+         // we can't centralize this function -> we have to keep it here because we need the displayName
 
          // clear up the form
          resetFormFields();

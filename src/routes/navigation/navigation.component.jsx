@@ -7,12 +7,7 @@ import { signOutUser } from '../../utils/firebase/firebase.utils';
 import logo from '../../assets/crown.svg';
 
 const Navigation = () => {
-   const { currentUser, setCurrentUser } = useContext(UserContext);
-
-   const signOutHandler = async () => {
-      await signOutUser;
-      setCurrentUser(null);
-   };
+   const { currentUser } = useContext(UserContext);
 
    return (
       <Fragment>
@@ -27,7 +22,7 @@ const Navigation = () => {
                {currentUser ? (
                   <span
                      className='nav-link py-2.5 px-4 cursor-pointer'
-                     onClick={signOutHandler}
+                     onClick={signOutUser}
                   >
                      SIGN OUT
                   </span>

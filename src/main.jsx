@@ -12,9 +12,9 @@ createRoot(document.getElementById('root')).render(
       <BrowserRouter>
          <UserProvider>
             <App />
-            // All the components inside the UserProvider tag will be able to
-            access its context
          </UserProvider>
       </BrowserRouter>
    </StrictMode>,
 );
+
+// All the components inside the UserProvider tag will be able to access its context
