@@ -7,7 +7,7 @@ import shoppingIcon from '../../assets/shopping-bag.svg';
 import './cart-icon.styles.scss';
 
 const CartIcon = () => {
-   const { isCartOpen, setIsCartOpen } = useContext(CartContext);
+   const { isCartOpen, setIsCartOpen, cartCount } = useContext(CartContext);
 
    const toggleIsCartOpen = () => setIsCartOpen(!isCartOpen);
 
@@ -18,7 +18,7 @@ const CartIcon = () => {
             src={shoppingIcon}
             alt='chart logo image'
          />
-         <span className='item-count'>5</span>
+         <span className='item-count'>{cartCount}</span>
       </div>
    );
 };
