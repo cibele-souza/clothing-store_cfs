@@ -14,7 +14,16 @@ import {
 } from 'firebase/auth';
 
 // Import the frunctions you need for your database
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+import {
+   getFirestore,
+   doc,
+   getDoc,
+   setDoc,
+   collection,
+   writeBatch,
+   query,
+   getDocs,
+} from 'firebase/firestore';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -42,6 +51,43 @@ export const signInWithGooglePopup = () =>
 
 // Create the database instance
 export const db = getFirestore();
+
+// Create a method to upload data into Firestore
+export const addCollectionAndDocuments = async (
+   collectionKey,
+   objectsToAdd,
+) => {
+   const collectionRef = collection(db, collectionKey);
+   const batch = writeBatch(db);
+
+   objectsToAdd.forEach((object) => {
+      const docRef = doc(collectionRef, object.title.toLowerCase());
+      batch.set(docRef, object);
+   });
+
+   await batch.commit();
+   console.log('done');
+};
+
+// Retrieving data from the Firestore database
+export const getCategoriesAndDocuments = async () => {
+   const collectionRef = collection(db, 'categories');
+   const q = query(collectionRef);
+
+   const querySnapshot = await getDocs(q);
+   // => getDocs is the asynchronous ability to fetch the documents snapshots that we want
+   // they are now all encapsulated under querySnapshot
+   // querySnapshot.docs => gives an array of all the individual documents inside / the snapshots are the actual data themselves
+   // we can reduce off this array to end up with an object (data structure that we need to populate the application):
+   const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+      // destructure the values of the data of the doc snapshot:
+      const { title, items } = docSnapshot.data();
+      acc[title.toLowerCase()] = items;
+      return acc;
+   }, {});
+
+   return categoryMap;
+};
 
 // -> Function that will take the data we are getting from the authentication service and store it inside of Firestore
 // additionalInfo: if we sign-up with email/password, we are not going to have userName that comes from userAuth
