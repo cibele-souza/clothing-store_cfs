@@ -8,7 +8,7 @@ import {
    createUserDocumentFromAuth,
 } from '../../utils/firebase/firebase.utils';
 
-import './sign-up-form.styles.scss';
+import { SignUpContainer } from './sign-up-form.styles';
 
 const defaultFormFields = {
    displayName: '',
@@ -20,8 +20,6 @@ const defaultFormFields = {
 const SignUpForm = () => {
    const [formFields, setFormFields] = useState(defaultFormFields);
    const { displayName, email, password, confirmPassword } = formFields; // destructuring of the object formFields;
-
-   // console.log(formFields);
 
    const resetFormFields = () => setFormFields(defaultFormFields);
 
@@ -46,9 +44,9 @@ const SignUpForm = () => {
             email,
             password,
          );
-
          // create a user document from what createAuthUserWithEmailAndPassword returns + pass the displayName
          await createUserDocumentFromAuth(user, { displayName });
+         // we can't centralize this function -> we have to keep it here because we need the displayName
 
          // clear up the form
          resetFormFields();
@@ -69,7 +67,7 @@ const SignUpForm = () => {
    };
 
    return (
-      <div className='sign-up-container'>
+      <SignUpContainer>
          <h2>Don't have an account?</h2>
          <span>Sign up with your email and password</span>
          <form onSubmit={handleSubmit}>
@@ -133,7 +131,7 @@ const SignUpForm = () => {
 
             <Button type='submit'>Sign Up</Button>
          </form>
-      </div>
+      </SignUpContainer>
    );
 };
 
