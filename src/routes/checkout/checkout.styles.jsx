@@ -21,6 +21,10 @@ export const HeaderBlock = styled.div`
    text-transform: capitalize;
    width: 23%;
 
+   span {
+      font-size: 18px;
+   }
+
    &:last-child {
       width: 8%;
    }

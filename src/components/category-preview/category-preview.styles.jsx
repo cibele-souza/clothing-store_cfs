@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import Link from 'react-router';
+import { Link } from 'react-router';
 
 export const CategoryPreviewContainer = styled.div`
    display: flex;

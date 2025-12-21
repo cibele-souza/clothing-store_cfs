@@ -12,7 +12,7 @@ const shrinkLabelStyles = css`
 
 export const FormInputLabel = styled.label`
    color: ${subColor};
-   font-size: 16px;
+   font-size: 18px;
    font-weight: normal;
    position: absolute;
    pointer-events: none;
@@ -20,14 +20,15 @@ export const FormInputLabel = styled.label`
    top: 10px;
    transition: 300ms ease all;
 
-   ${({ shrink }) => shrink && shrinkLabelStyles};
+   ${({ $shrink }) => $shrink && shrinkLabelStyles};
 `;
 
 export const Input = styled.input`
    background: none;
    background-color: white;
    color: ${subColor};
-   font-size: 18px;
+   font-size: 20px;
+   font-family: 'Saira Condensed', sans-serif;
    padding: 10px 10px 10px 5px;
    display: block;
    width: 100%;

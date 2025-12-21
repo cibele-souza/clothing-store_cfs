@@ -12,6 +12,7 @@ export const CartIconContainer = styled.div`
    align-items: center;
    justify-content: center;
    cursor: pointer;
+   margin: 0 0 0 10px;
 `;
 
 export const ItemCount = styled.span`

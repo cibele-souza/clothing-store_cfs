@@ -5,7 +5,7 @@ const FormInput = ({ label, ...otherProps }) => {
       <Group>
          <Input {...otherProps} />
          {label && (
-            <FormInputLabel shrink={otherProps.value.lenght}>
+            <FormInputLabel $shrink={otherProps.value?.length}>
                {label}
             </FormInputLabel>
          )}

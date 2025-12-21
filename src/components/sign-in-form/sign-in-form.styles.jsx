@@ -6,6 +6,7 @@ export const SignInContainer = styled.div`
    width: 380px;
 
    h2 {
+      font-size: 1.7em;
       margin: 10px 0;
    }
 `;
